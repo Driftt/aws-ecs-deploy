@@ -10,6 +10,9 @@ if [[ $# < 3 ]]; then
   echo "usage: $(basename $0) account role aws_cmd"
   echo "  runs the command under the assumed role, e.g."
   echo "    assume_role 1234 mydeployerrole aws s3 ls"
+  echo "  with no arguments, supplies the assumer environment vars
+  echo "  suitable for eval, e.g."
+  echo "    eval $(assume_role 1234 mydeployerrole)"
   exit 1
 fi
 
@@ -28,4 +31,11 @@ export AWS_SECRET_ACCESS_KEY=$(cat ${aws_tmp} | jq -r ".Credentials.SecretAccess
 export AWS_SESSION_TOKEN=$(cat ${aws_tmp} | jq -r ".Credentials.SessionToken")
 export AWS_SESSION_EXPIRATION=$(cat ${aws_tmp} | jq -r ".Credentials.Expiration")
 
-"$@"
+if [[ $# > 0 ]]; then
+  "$@"
+else
+  echo export AWS_ACCESS_KEY_ID=\"$AWS_ACCESS_KEY_ID\"
+  echo export AWS_SECRET_ACCESS_KEY=\"$AWS_SECRET_ACCESS_KEY\"
+  echo export AWS_SESSION_TOKEN=\"$AWS_SESSION_TOKEN\"
+  echo export AWS_SESSION_EXPIRATION=\"$AWS_SESSION_EXPIRATION\"
+fi
