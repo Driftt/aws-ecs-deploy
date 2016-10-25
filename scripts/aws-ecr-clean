@@ -8,7 +8,7 @@ export AWS_REGION=${AWS_REGION:-$AWS_DEFAULT_REGION}
 : "${AWS_ACCESS_KEY_ID:?Need to set AWS_ACCESS_KEY_ID}"
 : "${AWS_SECRET_ACCESS_KEY:?Need to set AWS_SECRET_ACCESS_KEY}"
 
-if [[ $# < 1 ]]; then
+if (( $# < 1 )); then
   echo "usage: $(basename $0) repo_name [image_keep_count=50]"
   echo "  updates service with new image"
   exit 1

@@ -8,13 +8,13 @@ export AWS_REGION=${AWS_REGION:-$AWS_DEFAULT_REGION}
 : "${AWS_ACCESS_KEY_ID:?Need to set AWS_ACCESS_KEY_ID}"
 : "${AWS_SECRET_ACCESS_KEY:?Need to set AWS_SECRET_ACCESS_KEY}"
 
-if [[ $# < 2 ]]; then
+if (( $# < 2 )); then
   echo "usage: $(basename $0) account role aws_cmd" 1>&2
   echo "  runs the command under the assumed role, e.g." 1>&2
   echo "    assume_role 1234 mydeployerrole aws s3 ls" 1>&2
   echo "  with no arguments, supplies the assumer environment vars" 1>&2
   echo "  suitable for eval, e.g." 1>&2
-  echo "    eval $(assume_role 1234 mydeployerrole)" 1>&2
+  echo "    eval \$($(basename $0) 1234 mydeployerrole)" 1>&2
   exit 1
 fi
 
