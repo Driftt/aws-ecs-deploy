@@ -23,7 +23,7 @@ image_keep_count=${2:-50}
 # keep_count. We ignore images without a tag as they could be dependent layers (?)
 keep_idx=$(($image_keep_count + 1))
 old_images=$(
-  aws ecr list-images --repository-name "${repo_name}" | \
+  aws ecr list-images --repository-name "${repo_name}" --max-items 1000 | \
     jq -r "[.imageIds[] | select(.imageTag != null)] | sort_by(.imageTag) | map(\"imageDigest=\" + .imageDigest)[0:-$keep_idx] | join(\" \")"
 )
 
